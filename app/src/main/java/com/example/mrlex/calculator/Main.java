@@ -1,7 +1,6 @@
 package com.example.mrlex.calculator;
 
-import android.icu.text.DecimalFormat;
-import android.icu.text.NumberFormat;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,10 +12,12 @@ public class Main extends AppCompatActivity {
     public static final String SAVE_TEMP = "SAVE_TEMP";
     public static final String SAVE_NUMBER = "SAVE_NUMBER";
     public static final String SAVE_OPERATOR = "SAVE_OPERATOR";
+    public static final String SAVE_LOG = "SAVE_LOG";
     TextView display;
     private String temp = "";
     private String number = "";
     private char operator = ' ';
+    private String log = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class Main extends AppCompatActivity {
         outState.putString(SAVE_TEMP, temp);
         outState.putString(SAVE_NUMBER, number);
         outState.putChar(SAVE_OPERATOR, operator);
+        outState.putString(SAVE_LOG, log);
 
     }
 
@@ -40,6 +42,7 @@ public class Main extends AppCompatActivity {
         temp = savedInstanceState.getString(SAVE_TEMP);
         number = savedInstanceState.getString(SAVE_NUMBER);
         operator = savedInstanceState.getChar(String.valueOf(SAVE_OPERATOR));
+        log = savedInstanceState.getString(SAVE_LOG);
 
         super.onRestoreInstanceState(savedInstanceState);
     }
@@ -69,36 +72,6 @@ public class Main extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             switch (v.getTag().toString()) {
-                case "btn0":
-                    addNumber("0");
-                    break;
-                case "btn1":
-                    addNumber("1");
-                    break;
-                case "btn2":
-                    addNumber("2");
-                    break;
-                case "btn3":
-                    addNumber("3");
-                    break;
-                case "btn4":
-                    addNumber("4");
-                    break;
-                case "btn5":
-                    addNumber("5");
-                    break;
-                case "btn6":
-                    addNumber("6");
-                    break;
-                case "btn7":
-                    addNumber("7");
-                    break;
-                case "btn8":
-                    addNumber("8");
-                    break;
-                case "btn9":
-                    addNumber("9");
-                    break;
                 case "btnRes":
                     temp = "";
                     number = "";
@@ -119,41 +92,54 @@ public class Main extends AppCompatActivity {
                     break;
                 case "btnEqual":
                     if (!number.equals("")) {
+                        log += number + " ";
                         calculate(Double.parseDouble(number), operator);
+                        log += "= " + clearDouble(temp) + "\n";
                     }
                     operator = ' ';
                     break;
                 case "btnDot":
                     addNumber(".");
                     break;
+                case "btnViewCalc":
+                    viewLog();
+                    break;
+                case "btnSym":
+                    changeNumberSymbol();
+                    break;
+                default:
+                    addNumber(v.getTag().toString());
             }
         }
     };
 
     private void calculate(Double num, char op) {
-        switch (op) {
-            case ('/'):
-                if (Double.parseDouble(number) != 0.0) {
-                    this.temp = Double.toString(Double.parseDouble(this.temp) / num);
-                } else {
-                    display.setText(R.string.noZero);
-                }
-                break;
-            case ('-'):
-                this.temp = Double.toString(Double.parseDouble(this.temp) - num);
-                break;
-            case ('+'):
-                this.temp = Double.toString(Double.parseDouble(this.temp) + num);
-                break;
-            case ('*'):
-                this.temp = Double.toString(Double.parseDouble(this.temp) * num);
-                break;
+        if (!number.equals("")) {
+            switch (op) {
+                case ('/'):
+                    if (num != 0.0) {
+                        this.temp = Double.toString(Double.parseDouble(this.temp) / num);
+                    } else {
+                        display.setText(R.string.noZero);
+                    }
+                    break;
+                case ('-'):
+                    this.temp = Double.toString(Double.parseDouble(this.temp) - num);
+                    break;
+                case ('+'):
+                    this.temp = Double.toString(Double.parseDouble(this.temp) + num);
+                    break;
+                case ('*'):
+                    this.temp = Double.toString(Double.parseDouble(this.temp) * num);
+                    break;
+            }
+            this.number = "";
+            sendToDisplay(this.temp);
         }
-        this.number = "";
-        sendToDisplay(this.temp);
     }
 
     private void addNumber(String num) {
+        num = num.replace("btn", "");
         if (num.equals(".")) {
             if (this.number.equals("")) {
                 this.number = "0" + num;
@@ -168,6 +154,7 @@ public class Main extends AppCompatActivity {
     }
 
     private void setOperator(char op) {
+        this.log += this.number + " " + op + " ";
         if (this.operator != ' ') {
             if (!this.number.equals("")) {
                 calculate(Double.parseDouble(this.number), this.operator);
@@ -180,15 +167,34 @@ public class Main extends AppCompatActivity {
             }
             this.number = "";
         }
-
     }
 
     public void sendToDisplay(String s) {
+        display.setText(clearDouble(s));
+    }
+
+    public void viewLog() {
+        Intent intent = new Intent(this, ViewCalculation.class);
+        intent.putExtra("log", this.log);
+        startActivity(intent);
+    }
+
+    public String clearDouble(String s) {
         if ((Double.parseDouble(s) % 1) == 0) {
             s = s.split("\\.", 2)[0];
         }
-        display.setText(s);
+        return s;
     }
 
+    public void changeNumberSymbol() {
+        if (!number.equals("")) {
+            if (!this.number.contains("-")) {
+                this.number = "-" + this.number;
+            } else {
+                this.number = this.number.replace("-", "");
+            }
+            display.setText(this.number);
+        }
+    }
 
 }
