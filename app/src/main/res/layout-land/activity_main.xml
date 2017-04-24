@@ -29,114 +29,20 @@
         android:text="@string/empty"
         android:textSize="60sp" />
 
-    <Button
-        android:id="@+id/btn7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <GridView
+        android:id="@+id/gridNumbers"
+        android:layout_width="261dp"
+        android:layout_height="191dp"
         android:layout_column="0"
-        android:layout_gravity="fill_horizontal"
+        android:layout_columnSpan="3"
         android:layout_row="1"
-        android:tag="btn7"
-        android:text="@string/btn7" />
+        android:layout_rowSpan="4"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:horizontalSpacing="10dp"
+        android:numColumns="3"
+        android:verticalSpacing="10dp"></GridView>
 
-    <Button
-        android:id="@+id/btn8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="1"
-        android:layout_row="1"
-        android:tag="btn8"
-        android:text="@string/btn8" />
-
-    <Button
-        android:id="@+id/btn9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="2"
-        android:layout_row="1"
-        android:tag="btn9"
-        android:text="@string/btn9" />
-
-    <Button
-        android:id="@+id/btn4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:layout_row="2"
-        android:tag="btn4"
-        android:text="@string/btn4" />
-
-    <Button
-        android:id="@+id/btn5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="1"
-        android:layout_row="2"
-        android:tag="btn5"
-        android:text="@string/btn5" />
-
-    <Button
-        android:id="@+id/btn6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="2"
-        android:layout_row="2"
-        android:tag="btn6"
-        android:text="@string/btn6" />
-
-    <Button
-        android:id="@+id/btn1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:layout_row="3"
-        android:tag="btn1"
-        android:text="@string/btn1" />
-
-    <Button
-        android:id="@+id/btn2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="1"
-        android:layout_row="3"
-        android:tag="btn2"
-        android:text="@string/btn2" />
-
-    <Button
-        android:id="@+id/btn3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="2"
-        android:layout_row="3"
-        android:tag="btn3"
-        android:text="@string/btn3" />
-
-    <Button
-        android:id="@+id/btnDot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:layout_row="4"
-        android:tag="btnDot"
-        android:text="@string/btnDot" />
-
-    <Button
-        android:id="@+id/btnSym"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="2"
-        android:layout_row="4"
-        android:tag="btnSym"
-        android:text="@string/btnSym" />
-
-    <Button
-        android:id="@+id/btn0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="1"
-        android:layout_row="4"
-        android:tag="btn0"
-        android:text="@string/btn0" />
 
     <Button
         android:id="@+id/btnEqual"

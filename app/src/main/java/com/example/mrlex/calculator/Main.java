@@ -4,11 +4,20 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.TextView;
 
 
 public class Main extends AppCompatActivity {
+    private static final String[] btnNumbers = {"9", "8", "7",
+            "6", "5", "4", "3", "2", "1", ".",
+            "0", "+/-"};
+    GridView gridNumbers;
+    ArrayAdapter<String> adapter;
+
     public static final String SAVE_TEMP = "SAVE_TEMP";
     public static final String SAVE_NUMBER = "SAVE_NUMBER";
     public static final String SAVE_OPERATOR = "SAVE_OPERATOR";
@@ -23,7 +32,6 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initViews();
     }
 
@@ -60,12 +68,25 @@ public class Main extends AppCompatActivity {
     }
 
     void initViews() {
+        adapter = new ArrayAdapter<String>(this, R.layout.button, R.id.btnNumText, btnNumbers);
+        gridNumbers = (GridView) findViewById(R.id.gridNumbers);
+        gridNumbers.setAdapter(adapter);
 
         GridLayout container = (GridLayout) findViewById(R.id.gridLayout);
         for (int i = 0; i < container.getChildCount(); i++) {
-            container.getChildAt(i).setOnClickListener(clickListener);
+            if (container.getChildAt(i) != findViewById(R.id.gridNumbers))
+                container.getChildAt(i).setOnClickListener(clickListener);
         }
         display = (TextView) findViewById(R.id.display);
+
+        gridNumbers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                if (btnNumbers[position].equals(".")) addNumber(".");
+                else if (btnNumbers[position].equals("+/-")) changeNumberSymbol();
+                else addNumber(btnNumbers[position]);
+            }
+        });
     }
 
     View.OnClickListener clickListener = new View.OnClickListener() {
@@ -91,24 +112,16 @@ public class Main extends AppCompatActivity {
                     setOperator('-');
                     break;
                 case "btnEqual":
-                    if (!number.equals("")) {
+                    if (!number.equals("") || !temp.equals("")) {
                         log += number + " ";
                         calculate(Double.parseDouble(number), operator);
                         log += "= " + clearDouble(temp) + "\n";
                     }
                     operator = ' ';
                     break;
-                case "btnDot":
-                    addNumber(".");
-                    break;
                 case "btnViewCalc":
                     viewLog();
                     break;
-                case "btnSym":
-                    changeNumberSymbol();
-                    break;
-                default:
-                    addNumber(v.getTag().toString());
             }
         }
     };
